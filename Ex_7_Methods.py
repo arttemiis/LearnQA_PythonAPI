@@ -1,6 +1,5 @@
 import requests
 
-
 methods_list = {"GET", "POST", "PUT", "DELETE"}
 
 for i in methods_list:
