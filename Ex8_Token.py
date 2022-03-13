@@ -3,7 +3,6 @@ import time
 import json
 
 key_list = ["seconds", "token", "error", "status", "result"]
-
 response = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job")
 print("Создаем задачу")
 parsing = json.loads(response.text)
