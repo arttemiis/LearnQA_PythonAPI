@@ -18,11 +18,8 @@ class TestUserAgent:
         platform = conditions['platform']
         browser = conditions['browser']
         device = conditions['device']
-
         response = requests.get("https://playground.learnqa.ru/ajax/api/user_agent_check", headers={"User-Agent": f"{user_agent}]"})
         assert response.status_code == 200, "Wrong response code"
-
-
         try:
             parsed_text = json.loads(response.text)
             assert parsed_text['platform'] == platform, "There is no header in the response"
