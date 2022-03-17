@@ -22,8 +22,8 @@ class TestUserAgent:
         assert response.status_code == 200, "Wrong response code"
         try:
             parsed_text = json.loads(response.text)
-            assert parsed_text['platform'] == platform, "There is no header in the response"
-            assert parsed_text['browser'] == browser, "There is no header in the response"
-            assert parsed_text['device'] == device, "There is no header in the response"
+            assert parsed_text['platform'] == platform, f"The expected parameter Platform is incorrect: {platform}"
+            assert parsed_text['browser'] == browser, f"The expected parameter Browser is incorrect: {browser}"
+            assert parsed_text['device'] == device, f"The expected parameter Devise is incorrect: {device}"
         except JSONDecodeError:
             print("Response is not a JSON format")
