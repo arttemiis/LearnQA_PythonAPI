@@ -1,11 +1,12 @@
-import pytest
-from datetime import datetime
-import requests
+
 from lib.assertions import Assertion
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
+import allure
+@allure.epic("Тестировние методов запросов")
 class TestUserGet(BaseCase):
-
+    @allure.feature("Запрос данных другого пользователя")
+    @allure.severity('critical')
     def test_get_another_users_data(self):
         first_data = {
             'email': 'vinkotov@example.com',
@@ -25,4 +26,4 @@ class TestUserGet(BaseCase):
         Assertion.assert_json_has_key(response3, "username")
         Assertion.assert_json_has_not_key(response3, "email")
         Assertion.assert_json_has_not_key(response3, "firstName")
-        Assertion.assert_json_has_not_key(response3, "lastName")
+        Assertion.assert_json_has_not_key(response3, "Name")

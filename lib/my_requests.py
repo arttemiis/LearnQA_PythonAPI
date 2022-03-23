@@ -1,21 +1,26 @@
 import requests
 from lib.my_logger import MyLogger
 from environment import ENV_OBJECT
+import allure
 class MyRequests():
     @staticmethod
     def post(url: str, data: dict = None, headers: dict = None, cookies: dict = None):
-        return MyRequests._send(url, data, headers, cookies, 'POST')
+        with allure.step(f"Post request to URL '{url}'"):
+            return MyRequests._send(url, data, headers, cookies, 'POST')
 
     @staticmethod
     def get(url: str, data: dict = None, headers: dict = None, cookies: dict = None):
-        return MyRequests._send(url, data, headers, cookies, 'GET')
+        with allure.step(f"Get request to URL '{url}'"):
+            return MyRequests._send(url, data, headers, cookies, 'GET')
 
     @staticmethod
     def put(url: str, data: dict = None, headers: dict = None, cookies: dict = None):
-        return MyRequests._send(url, data, headers, cookies, 'PUT')
+        with allure.step(f"Put request to URL '{url}'"):
+            return MyRequests._send(url, data, headers, cookies, 'PUT')
     @staticmethod
     def delete(url: str, data: dict = None, headers: dict = None, cookies: dict = None):
-        return MyRequests._send(url, data, headers, cookies, 'DELETE')
+        with allure.step(f"Delete request to URL '{url}'"):
+            return MyRequests._send(url, data, headers, cookies, 'DELETE')
     @staticmethod
     def _send(url: str, data: dict, headers: dict, cookies: dict, method: str):
         url = f"{ENV_OBJECT.get_base_url()}{url}"

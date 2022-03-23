@@ -12,10 +12,10 @@ class TestUserAuth(BaseCase):
     def setup(self):
         data = {
             'email': 'vinkotov@example.com',
-            'passvord': '1234'
+            'password': '1234'
         }
         response1 = MyRequests.post("user/login", data=data)
-        self.auth_sid = self.get_cookie(response1,"auth-sid")
+        self.auth_sid = self.get_cookie(response1, "auth-sid")
         self.token = self.get_header(response1, "x-csrf-token")
     def test_auth_user(self):
         response2 = MyRequests.get("users/auth",
@@ -31,9 +31,9 @@ class TestUserAuth(BaseCase):
 class TestUserRegister(BaseCase):
     def test_create_user_successfully(self):
         data = self.prepare_registration_data()
-        response = MyRequests.post("users", dsta=data)
+        response = MyRequests.post("users", data=data)
         Assertion.assert_code_status(response, 200)
-        Assertion.assert_json_has_key(response ,"id")
+        Assertion.assert_json_has_key(response,"id")
 
     def test_create_user_with_existing_email(self):
         email = 'vinkotov@example.com'

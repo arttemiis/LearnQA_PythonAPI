@@ -6,8 +6,15 @@ import requests
 from lib.assertions import Assertion
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
+import allure
+
+@allure.epic("Тестировние методов запросов")
 class TestUserEdit(BaseCase):
 
+    @allure.feature("Негативные тесты на Put")
+    @allure.story("Неавторизованный запрос")
+    @allure.description('Попытаемся изменить данные пользователя, будучи неавторизованными')
+    @allure.severity('minor')
     def test_change_unauthorized_users(self):
         register_data = self.prepare_registration_data()
         response = MyRequests.post("user", data=register_data)
@@ -22,6 +29,10 @@ class TestUserEdit(BaseCase):
         Assertion.assert_code_status(response3, 400)
         assert response3.content.decode("utf-8") == "Auth token not supplied", "Auth token supplied"
 
+    @allure.feature("Негативные тесты на Put")
+    @allure.story("Неавторизованный запрос")
+    @allure.description("Попытаемся изменить данные пользователя, будучи авторизованными другим пользователем")
+    @allure.severity('minor')
     def test_change_authorized_by_another_user(self):
 
         register_data1 = self.prepare_registration_data()
@@ -73,7 +84,10 @@ class TestUserEdit(BaseCase):
 
         Assertion.assert_json_value_by_name(response6, "firstName", old_name, "The value has changed")
 
-
+    @allure.feature("Негативные тесты на Put")
+    @allure.story("Авторизованный запрос")
+    @allure.description("Попытаемся изменить email пользователя, будучи авторизованными тем же пользователем, на новый email без символа @")
+    @allure.severity('minor')
     def test_change_your_email(self):
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("user", data=register_data)
@@ -107,6 +121,10 @@ class TestUserEdit(BaseCase):
         Assertion.assert_code_status(response3, 400)
         assert response3.content.decode("utf-8") == "Invalid email format", "Correct email format"
 
+    @allure.feature("Негативные тесты на Put")
+    @allure.story("Авторизованный запрос")
+    @allure.description("Попытаемся изменить firstName пользователя, будучи авторизованными тем же пользователем, на очень короткое значение в один символ")
+    @allure.severity('minor')
     def test_change_your_first_name_short(self):
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("user", data=register_data)
@@ -135,6 +153,5 @@ class TestUserEdit(BaseCase):
 
         Assertion.assert_code_status(response3, 400)
         Assertion.assert_json_value_by_name(response3, "error", "Too short value for field firstName", f"The new name has the correct format: '{new_name}'")
-        #assert response3.content.decode("utf-8") == "Too short value for field firstName", "Correct name format"
 
 

@@ -5,7 +5,9 @@ from datetime import datetime
 from lib.assertions import Assertion
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
-import json
+import allure
+
+@allure.epic("Тестировние методов запросов")
 class TestMethodUser(BaseCase):
     param_dara = {
         ("password"),
@@ -30,18 +32,22 @@ class TestMethodUser(BaseCase):
         self.lastName = 'learnqa'
 
 
-
+    @allure.feature("Создание пользователя")
+    @allure.story("Неполные данные в запросе")
+    @allure.severity('minor')
     def test_incorrect_email(self):
         base_part = "learnqa"
         domain = "example.com"
         random_part = datetime.now().strftime('%m%d%Y%H%M$S')
         email = f"{base_part}{random_part}{domain}"
         data = self.prepare_registration_data(email)
-        response = MyRequests.post("user", data=data)
+        response = MyRequests.post("user", data=data1)
         Assertion.assert_code_status(response, 400)
         assert response.text == "Invalid email format", f"The email format is correct '{email}'"
 
-
+    @allure.feature("Создание пользователя")
+    @allure.story("Неполные данные в запросе")
+    @allure.severity('minor')
     @pytest.mark.parametrize('conditions', param_dara)
     def test_with_missing_parameter(self, conditions):
         if conditions == "password":
@@ -64,6 +70,8 @@ class TestMethodUser(BaseCase):
         Assertion.assert_code_status(response, 400)
         assert response.text == f"The value of '{conditions}' field is too short", f"The value of '{conditions}' not field is too short"
 
+    @allure.feature("Создание пользователя")
+    @allure.story("Некорректное имя пользователя")
     def test_short_username(self):
         short_username = 'A'
         data = {"password": {self.password}, "username": {short_username}, "firstName": {self.firstName},
@@ -74,6 +82,9 @@ class TestMethodUser(BaseCase):
 
         assert response.text == "The value of 'username' field is too short", f"The value of 'username' is correct"
 
+    @allure.feature("Создание пользователя")
+    @allure.story("Некорректное имя пользователя")
+    @allure.severity('minor')
     def test_long_username(self):
         short_username = self.generate_random_string(300)
         data = {"password": {self.password}, "username": {short_username}, "firstName": {self.firstName},

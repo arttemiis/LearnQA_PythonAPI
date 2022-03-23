@@ -6,8 +6,13 @@ import requests
 from lib.assertions import Assertion
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
-
+import allure
+@allure.epic("Тестировние методов запросов")
 class TestUserDelete(BaseCase):
+
+    @allure.feature("Тесты на DELETE")
+    @allure.story("Пользователь не удалился")
+    @allure.severity('normal')
     def test_delete_vinkotov_user(self):
 
         login_data = {
@@ -24,9 +29,12 @@ class TestUserDelete(BaseCase):
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
-        Assertion.assert_code_status(response2, 400)
+        Assertion.assert_code_status(response2, 200)
         assert response2.content.decode("utf-8") == "Please, do not edit test users with ID 1, 2, 3, 4 or 5.", "Deleted a user with an Id greater than 5"
 
+    @allure.feature("Тесты на DELETE")
+    @allure.story("Пользователь удалился")
+    @allure.severity('critical')
     def test_delete_yourself(self):
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("user", data=register_data)
@@ -62,6 +70,9 @@ class TestUserDelete(BaseCase):
         Assertion.assert_code_status(response3, 404)
         assert response3.content.decode("utf-8") == "User not found", "The remote user exists!!"
 
+    @allure.feature("Тесты на DELETE")
+    @allure.story("Пользователь не удалился")
+    @allure.severity('critical')
     def test_delete_authorized_by_another_user(self):
         register_data1 = self.prepare_registration_data()
         response1 = MyRequests.post("user", data=register_data1)
